@@ -8,11 +8,12 @@ class MyStack(TerraformStack):
     def __init__(self, scope: Construct, ns: str):
         super().__init__(scope, ns)
 
-        AwsProvider(self, "AWS", region="us-west-1")
+        AwsProvider(self, "AWS", region="ap-northeast-2")
 
         instance = ec2.Instance(self, "compute",
-                                ami="ami-01456a894f71116f2",
+                                ami="ami-058165de3b7202099",
                                 instance_type="t2.micro",
+                                tags= { "Name" : "CDKTF-DEMO" },
                                 )
 
         TerraformOutput(self, "public_ip",
@@ -26,7 +27,7 @@ stack = MyStack(app, "aws_instance")
 RemoteBackend(stack,
               hostname='app.terraform.io',
               organization='codns',
-              workspaces=NamedRemoteWorkspace('learn-cdktf')
+              workspaces=NamedRemoteWorkspace('cdktf_python')
               )
 
 app.synth()
