@@ -23,10 +23,10 @@ class MyStack(TerraformStack):
 app = App()
 stack = MyStack(app, "aws_instance")
 
-# RemoteBackend(stack,
-#               hostname='app.terraform.io',
-#               organization='<YOUR_ORG>',
-#               workspaces=NamedRemoteWorkspace('learn-cdktf')
-#               )
+RemoteBackend(stack,
+              hostname='app.terraform.io',
+              organization='codns',
+              workspaces=NamedRemoteWorkspace('learn-cdktf')
+              )
 
 app.synth()
