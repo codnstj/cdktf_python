@@ -1,31 +1,32 @@
 #!/usr/bin/env python
-
 from constructs import Construct
-from cdktf import App, TerraformStack
-from cdktf_cdktf_provider_docker import Image, Container, DockerProvider
+from cdktf import App, NamedRemoteWorkspace, TerraformStack, TerraformOutput, RemoteBackend
+from cdktf_cdktf_provider_aws import AwsProvider, ec2
 
 
 class MyStack(TerraformStack):
     def __init__(self, scope: Construct, ns: str):
         super().__init__(scope, ns)
 
-        DockerProvider(self, 'docker')
+        AwsProvider(self, "AWS", region="us-west-1")
 
-        docker_image = Image(self, 'nginxImage',
-            name='nginx:latest',
-            keep_locally=False)
+        instance = ec2.Instance(self, "compute",
+                                ami="ami-01456a894f71116f2",
+                                instance_type="t2.micro",
+                                )
 
-        Container(self, 'nginxContainer',
-            name='tutorial',
-            image=docker_image.name,
-            ports=[{
-                'internal': 80,
-                'external': 8000
-            }])
+        TerraformOutput(self, "public_ip",
+                        value=instance.public_ip,
+                        )
 
 
 app = App()
-MyStack(app, "learn-cdktf-docker")
+stack = MyStack(app, "aws_instance")
+
+# RemoteBackend(stack,
+#               hostname='app.terraform.io',
+#               organization='<YOUR_ORG>',
+#               workspaces=NamedRemoteWorkspace('learn-cdktf')
+#               )
 
 app.synth()
-
