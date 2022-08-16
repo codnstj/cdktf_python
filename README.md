@@ -1,6 +1,3 @@
-# Python_cdktf
-cdk for Terraform for Python 
-
 ## References
 
 > https://www.terraform.io/cdktf/examples
