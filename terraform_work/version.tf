@@ -4,6 +4,12 @@ provider "aws" {
 }
 
 terraform {
+  backend "remote" {
+    organization = "codns"
+    workspaces {
+      name = "terraform_work"
+    }
+  }
   required_providers {
     aws = {
       source  = "hashicorp/aws"
