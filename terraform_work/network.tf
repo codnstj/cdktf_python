@@ -69,3 +69,8 @@ resource "aws_route_table_association" "public_subnets_association" {
   subnet_id = aws_subnet.ecs_subnet_pub.id
   route_table_id = aws_default_route_table.default_route.id
 }
+
+resource "aws_route_table_association" "private_subnets_association" {
+  subnet_id = aws_subnet.ecs_subnet_priv.id
+  route_table_id = aws_route_table.priv_route.id
+}
